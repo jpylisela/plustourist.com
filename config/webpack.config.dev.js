@@ -109,6 +109,7 @@ module.exports = {
         exclude: [
           /\.html$/,
           /\.(js|jsx)$/,
+          /\.scss$/,
           /\.css$/,
           /\.json$/,
           /\.svg$/
@@ -131,6 +132,11 @@ module.exports = {
           // directory for faster rebuilds.
           cacheDirectory: true
         }
+      },
+      // SASS files
+      {
+        test: /\.scss$/,
+        loader: 'style!css?importLoaders=1!postcss!sass'
       },
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.

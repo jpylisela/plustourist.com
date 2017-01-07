@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import GoogleMap from 'google-map-react';
 
 import logo from './logo.svg';
-// import MyGreatPlace from './my_great_place.jsx';
-
-import './App.css';
+import './App.scss';
 
 export default class SimpleMapPage extends Component {
   static defaultProps = {
@@ -20,20 +18,26 @@ export default class SimpleMapPage extends Component {
 
   render() {
     return (
-		<div className="app">
-			<img src={logo} className="logo" alt="logo" />
-			<h2 className="title">Welcome to Plus Tourist</h2>
-			<div className="map-container">
-				<GoogleMap
-					bootstrapURLKeys={{
-						key: 'AIzaSyBASoIltUYEdmuTOs_x0ssvJHkoYTdtPvQ',
-						language: 'en'
-					}}
-					defaultCenter={this.props.center}
-					defaultZoom={this.props.zoom}>
-				</GoogleMap>
+    <div className="container-fluid app">
+    	<div className="row header">
+    		<div className="col-12">
+					<img src={logo} className="logo" alt="logo" />
+					<h2 className="title">Welcome to Plus Tourist</h2>
+    		</div>
+    	</div>
+     	<div className="row content">
+    		<div className="col-12 map-container">
+					<GoogleMap
+						bootstrapURLKeys={{
+							key: 'AIzaSyBASoIltUYEdmuTOs_x0ssvJHkoYTdtPvQ',
+							language: 'en'
+						}}
+						defaultCenter={this.props.center}
+						defaultZoom={this.props.zoom}>
+					</GoogleMap>
+				</div>
 			</div>
-		</div>
+    </div>
     );
   }
 }
