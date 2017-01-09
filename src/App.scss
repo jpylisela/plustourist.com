@@ -80,12 +80,6 @@ $xl-min: 1200px;
 }
 
 
-
-
-
-
-
-
 // Application
 .app {
 	text-align: center;
@@ -123,7 +117,6 @@ $xl-min: 1200px;
 		}
 	}
 
-
 	.search {
 		margin-top: 9px;
 
@@ -136,7 +129,7 @@ $xl-min: 1200px;
 
 		.input {
 			padding: 12px;
-			border: 1px solid mix($brand-color, $white, 14%);
+			// border: 1px solid mix($brand-color, $white, 14%);
 			@include border-radius(3px);
 			@include placeholder {
 				color: $light-grey;
@@ -160,10 +153,6 @@ $xl-min: 1200px;
 	.map-container {
 		padding: 0;
 	}
-
-	.results {
-		padding: 0;
-	}
 }
 
 .results {
@@ -173,24 +162,29 @@ $xl-min: 1200px;
     width: 100%;
     right: 0;
     bottom: 0;
-    padding: 0;
   	@include font-size(1.3);
   	background: white;
   	background: rgba($white, 0.33);
+
+  	.item {
+  		border: none;
+
+  		.title {
+  			font-weight: 700;
+  			text-align: left;
+  		}
+  	}
 }
 
 
 // Responsive
-
 @media screen and (min-width: $md-min) {
-
 	.results {
 		left: 50%;
 	}
 }
 
 @media screen and (min-width: $lg-min) {
-
 	.results {
 		left: 66.6%;
 	}
