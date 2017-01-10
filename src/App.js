@@ -95,7 +95,11 @@ export default class SimpleMapPage extends Component {
 
 	doSearch( term) {
 		let self = this;
-		console.log('search', term);
+
+		// reset current items
+		self.setState({
+			places: []
+		});
 
 		API.search( term ).then(function( res ) {
 			console.log( 'res', res );
@@ -113,7 +117,8 @@ export default class SimpleMapPage extends Component {
 	}
 
 	render() {
-		let items = this.formatResults(this.state.places);
+		let items = this.formatResults( this.state.places );
+		let container_class = items.length > 0 ? 'results' : 'results loading';
 
 		console.log('render', items);
 
@@ -142,7 +147,7 @@ export default class SimpleMapPage extends Component {
 							defaultZoom={this.props.zoom}>
 						</GoogleMap>
 
-						<div className="container-fluid results">
+						<div className={container_class}>
 							<div className="row">
 								<div className="col-12 no-padding">
 
