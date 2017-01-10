@@ -107,7 +107,7 @@ export default class SimpleMapPage extends Component {
 
 						<div className="container-fluid results">
 							<div className="row">
-								<div className="col-4 no-padding">
+								<div className="col-12 no-padding">
 
 									<div className="list-group">
 
@@ -117,7 +117,7 @@ export default class SimpleMapPage extends Component {
 												<h5 className="mb-1 title">{item.name_en}</h5>
 												<small className="text-muted">{item.latitude}, {item.longitude}</small>
 											</div>
-											<h5 className="mb-1">{item.street_address_en}, {item.address_zip} {item.address_city_en}</h5>
+											<p className="mb-1">{item.street_address_en}, {item.address_zip} {item.address_city_en}</p>
 											<small className="text-muted text-left">{item.phone}</small>
 										</a>
 										))}

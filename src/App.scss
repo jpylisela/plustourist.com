@@ -5,8 +5,9 @@
 // Colors
 $white: #fff;
 $brand-color: #0b503c;
-$light-grey: #c7c7c7;
 $dark-grey: #484848;
+$light-grey: #c7c7c7;
+$hairline: #e8e8e8;
 
 // Dimensions
 $header-height: 62px;
@@ -80,10 +81,21 @@ $xl-min: 1200px;
 }
 
 
+// Typography
+p {
+	font-size: 1.25rem;
+    line-height: 1.1;
+}
+
+small {
+	font-size: 82%;
+}
+
+
 // Application
 .app {
 	text-align: center;
-	padding: 0;
+	padding: 0 15px;
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -123,12 +135,12 @@ $xl-min: 1200px;
 		.input, .btn {
 			line-height: 44px;
 			height: 44px;
-			font-size: 19px;
+			font-size: 20px;
 			color: $brand-color;
 		}
 
 		.input {
-			padding: 12px;
+			padding: 0 12px;
 			// border: 1px solid mix($brand-color, $white, 14%);
 			@include border-radius(3px);
 			@include placeholder {
@@ -168,10 +180,13 @@ $xl-min: 1200px;
 
   	.item {
   		border: none;
+  		border-top: 1px solid $hairline;
+  		padding: 1.25rem 1.5rem;
 
   		.title {
-  			font-weight: 700;
   			text-align: left;
+  			font-weight: 700;
+  			font-size: 1.3rem;
   		}
   	}
 }
@@ -181,12 +196,14 @@ $xl-min: 1200px;
 @media screen and (min-width: $md-min) {
 	.results {
 		left: 50%;
+		width: 50%;
 	}
 }
 
 @media screen and (min-width: $lg-min) {
 	.results {
-		left: 66.6%;
+		left: 66.666%;
+		width: 33.333%;
 	}
 }
 
