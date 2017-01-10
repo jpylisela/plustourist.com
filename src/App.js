@@ -8,7 +8,6 @@ import './App.scss';
 
 
 const API = {
-
 	search: function( term ) {
 		return fetch( '//plustourist.com/api/search.php', {
 			method: 'post',
@@ -26,6 +25,42 @@ const API = {
 	}
 };
 
+class SearchComponent extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {value: ''};
+
+		this.onChange = this.onChange.bind(this);
+		this.onKeyDown = this.onKeyDown.bind(this);
+		this.submit = this.submit.bind(this);
+	}
+
+	onChange(e) {
+		this.setState({ value: e.target.value });
+	}
+
+	onKeyDown(e) {
+		if ( e.keyCode === 13 ) {
+			this.props.onSearch( this.state.value );
+		}
+	}
+
+	submit(e) {
+		this.props.onSearch( this.state.value );
+	}
+
+	render() {
+		return (
+			<div className="search input-group">
+				<input type="text" value={this.state.value} onChange={this.onChange}  onKeyDown={this.onKeyDown} className="input form-control" placeholder="Search for..." />
+				<span className="search-btn input-group-btn">
+					<button className="btn btn-secondary" onClick={this.submit} type="button">Go</button>
+				</span>
+			</div>
+		);
+	}
+}
+
 export default class SimpleMapPage extends Component {
 
 	static defaultProps = {
@@ -41,11 +76,26 @@ export default class SimpleMapPage extends Component {
 			places: [],
 			current: null
 		}, props);
+
+		this.doSearch = this.doSearch.bind(this);
 	}
 
 	componentDidMount () {
-		let self = this;
 		let term = this.state.term;
+		this.doSearch( term )
+	}
+
+	formatResults ( items ) {
+		return items.map(( item ) => {
+			return Object.assign(item, {
+				phone: _.isEmpty(item.phone) ? '' : 'tel: ' + item.phone
+			});
+		})
+	}
+
+	doSearch( term) {
+		let self = this;
+		console.log('search', term);
 
 		API.search( term ).then(function( res ) {
 			console.log( 'res', res );
@@ -60,14 +110,6 @@ export default class SimpleMapPage extends Component {
 				});
 			}
 		});
-	}
-
-	formatResults ( items ) {
-		return items.map(( item ) => {
-			return Object.assign(item, {
-				phone: _.isEmpty(item.phone) ? '' : 'tel: ' + item.phone
-			});
-		})
 	}
 
 	render() {
@@ -85,12 +127,7 @@ export default class SimpleMapPage extends Component {
 						</h2>
 					</div>
 					<div className="col-6">
-						<div className="search input-group">
-							<input type="text" className="input form-control" placeholder="Search for..." />
-							<span className="search-btn input-group-btn">
-								<button className="btn btn-secondary" type="button">Go</button>
-							</span>
-						</div>
+						<SearchComponent onSearch={this.doSearch} />
 					</div>
 					<div className="col-3"></div>
 				</div>
