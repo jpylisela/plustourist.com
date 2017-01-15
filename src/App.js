@@ -4,8 +4,14 @@ import _ from 'underscore';
 
 import title from './plus-tourist.png';
 import logo from './logo.png';
-import './App.scss';
 
+import './App.scss';
+import MapLocation from './map_location.jsx';
+
+
+const defaultLocation = { lat: 60.170, lng: 24.970 };
+
+const transitionTime = 700;
 
 const API = {
 	search: function( term ) {
@@ -28,7 +34,10 @@ const API = {
 class SearchComponent extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {value: ''};
+		this.state = {
+			center: null,
+			value: ''
+		};
 
 		this.onChange = this.onChange.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
@@ -64,9 +73,11 @@ class SearchComponent extends React.Component {
 export default class SimpleMapPage extends Component {
 
 	static defaultProps = {
-		center: { lat: 60.170, lng: 24.970 },
+		center: defaultLocation,
 		zoom: 13,
-		term: 'ateneum'
+		loading: true,
+		transition: false,
+		term: 'cafe'
 	};
 
 	constructor( props ) {
@@ -74,10 +85,16 @@ export default class SimpleMapPage extends Component {
 
 		this.state = Object.assign({
 			places: [],
-			current: null
+			markers: [],
+			current: {}
 		}, props);
 
 		this.doSearch = this.doSearch.bind(this);
+		this.selectMenuItem = this.selectMenuItem.bind(this);
+		this.onMarkerSelect = this.onMarkerSelect.bind(this);
+		this.onMarkerEnter = this.onMarkerEnter.bind(this);
+		this.onMarkerLeave = this.onMarkerLeave.bind(this);
+		this.onChange = this.onChange.bind(this);
 	}
 
 	componentDidMount () {
@@ -85,9 +102,11 @@ export default class SimpleMapPage extends Component {
 		this.doSearch( term )
 	}
 
-	formatResults ( items ) {
-		return items.map(( item ) => {
-			return Object.assign(item, {
+	formatResults ( results ) {
+		return results.map(( result ) => {
+			let item = Object.assign({}, result);
+
+			return _.extend(item, {
 				phone: _.isEmpty(item.phone) ? '' : 'tel: ' + item.phone
 			});
 		})
@@ -98,29 +117,87 @@ export default class SimpleMapPage extends Component {
 
 		// reset current items
 		self.setState({
-			places: []
+			places: [],
+			loading: true
 		});
 
 		API.search( term ).then(function( res ) {
-			console.log( 'res', res );
 
 			if ( res && res.status === 200 ) {
-				let places = res.results;
-				let current = places.length ? _.first(places).id : null;
+
+				let places = _.map(res.results, ( item ) => {
+					item.latitude = parseFloat(item.latitude);
+					item.longitude = parseFloat(item.longitude);
+					return item;
+				});
+
+				let current = places.length ? _.first(places) : {};
 
 				self.setState({
 					places: places,
+					loading: false,
 					current: current
 				});
 			}
 		});
 	}
 
+	selectMenuItem(e) {
+		e.preventDefault();
+		let target = e.currentTarget;
+
+		let selected = _.find(this.state.places, (item) => {
+			return item.id === parseInt(target.id, 10);
+		});
+
+		this.setState({
+			current: selected,
+			transition: true
+		})
+	}
+
+	onMarkerSelect(id) {
+		let selected = _.find(this.state.places, (item) => {
+			return item.id === parseInt(id, 10);
+		});
+
+		this.setState({
+			current: selected,
+			transition: true
+		})
+	}
+
+	onMarkerEnter(id) {
+		// console.log('enter', id);
+	}
+
+	onMarkerLeave(id) {
+		// console.log('leave', id);
+	}
+
+	onChange(id) {
+		let self = this;
+
+		if ( this.state.transition ) {
+			setTimeout(() => {
+				self.setState({
+					transition: false
+				})
+			}, transitionTime);
+		}
+	}
+
 	render() {
-		let items = this.formatResults( this.state.places );
-		let container_class = items.length > 0 ? 'results' : 'results loading';
+		let state = this.state;
+		let items = this.formatResults( state.places );
 
 		console.log('render', items);
+
+		let current = state.current;
+		let position = current ? { lat: current.latitude, lng: current.longitude } : state.center;
+
+		let container = items.loading ? 'results loading' : 'results';
+		let map_container = state.transition ? 'col-12 map-container transition' : 'col-12 map-container';
 
 		return (
 			<div className="container-fluid app">
@@ -137,24 +214,38 @@ export default class SimpleMapPage extends Component {
 					<div className="col-3"></div>
 				</div>
 				<div className="row content">
-					<div className="col-12 map-container">
+					<div className={map_container}>
+
 						<GoogleMap
 							bootstrapURLKeys={{
 								key: 'AIzaSyBASoIltUYEdmuTOs_x0ssvJHkoYTdtPvQ',
 								language: 'en'
 							}}
 							defaultCenter={this.props.center}
-							defaultZoom={this.props.zoom}>
+							defaultZoom={this.props.zoom}
+							onChildClick={this.onMarkerSelect}
+					        onChildMouseEnter={this.onMarkerEnter}
+					        onChildMouseLeave={this.onMarkerLeave}
+					        onChange={this.onChange}
+							center={position}>
+							{items.map(( item ) => (
+							<MapLocation 
+								key={item.id}
+								lat={item.latitude}
+								lng={item.longitude}
+								item={item}
+								is_current={item.id === current.id}
+								zIndex={2} />
+							))}
 						</GoogleMap>
 
-						<div className={container_class}>
+						<div className={container}>
 							<div className="row">
 								<div className="col-12 no-padding">
 
 									<div className="list-group">
-
 										{items.map(( item ) => (
-										<a href="#" key={item.id} className="item list-group-item list-group-item-action flex-column align-items-start">
+										<a href="#" id={item.id} key={item.id} onClick={this.selectMenuItem} className="item list-group-item list-group-item-action flex-column align-items-start">
 											<div className="d-flex w-100 justify-content-between">
 												<h5 className="mb-1 title">{item.name_en}</h5>
 												<small className="text-muted">{item.latitude}, {item.longitude}</small>

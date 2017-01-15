@@ -1,6 +1,7 @@
 
-// Bootstrap 4
+// Imports
 @import "~bootstrap/scss/bootstrap";
+@import "bourbon/bourbon";
 
 // Colors
 $white: #fff;
@@ -8,12 +9,14 @@ $brand-color: #0b503c;
 $dark-grey: #484848;
 $light-grey: #c7c7c7;
 $hairline: #e8e8e8;
+$red: #d61600;
+$green: #007300;
 
 // Dimensions
 $header-height: 62px;
 $padding: 10px;
 
-// Responsive
+// Breakpoints
 $sm-min: 576px;
 $md-min: 768px;
 $lg-min: 992px;
@@ -52,38 +55,15 @@ $xl-min: 1200px;
 	border-radius: $radius;
 }
 
+@mixin fade($color, $opacity) {
+	background: $color;
+	background: transparentize($color, $opacity);
+}
+
 @mixin font-size($value) {
 	$px: $value * 10;
 	font-size: #{$px}px;
 	font-size: #{$value}rem;
-}
-
-@mixin optional-at-root($sel) {
-  @at-root #{if(not &, $sel, selector-append(&, $sel))} {
-    @content;
-  }
-}
-
-@mixin placeholder {
-  @include optional-at-root('::-webkit-input-placeholder') {
-    @content;
-  }
-
-  @include optional-at-root(':-moz-placeholder') {
-    @content;
-  }
-
-  @include optional-at-root('::-moz-placeholder') {
-    @content;
-  }
-
-  @include optional-at-root(':-ms-input-placeholder') {
-    @content;
-  }
-
-   @include optional-at-root('::-ms-input-placeholder') {
-    @content;
-  }
 }
 
 
@@ -174,6 +154,43 @@ small {
 
 	.map-container {
 		padding: 0;
+
+		// Transition for map animation
+		&.transition div {
+			@include transition(all 0.7s ease-in-out);
+		}
+
+		div.marker {
+			border: 3px solid $red;
+			@include transition(none !important);
+
+			.description {
+				visibility: hidden;
+				opacity: 0;
+				z-index: 3;
+				width: 100px;
+				background-color: white;
+				border: 2px solid black;
+				position: absolute;
+				left: -80px;
+				top: 20px;
+				padding: 6px;
+				color: black;
+				text-align: left;
+				width: 180px;
+				font-size: 12px;
+				@include transition(opacity 0.7s ease-in-out);
+			}
+
+			&.current {
+				border: 3px solid $green;
+
+				.description {
+					visibility: visible;
+					opacity: 1;
+				}
+			}
+		}
 	}
 }
 
@@ -195,6 +212,11 @@ small {
   		border: none;
   		border-top: 1px solid $hairline;
   		padding: 1.25rem 1.5rem;
+  		@include fade(#fff, 0.09);
+
+  		&.current {
+  			@include fade(#fff, 0.39);
+  		}
 
   		.title {
   			text-align: left;

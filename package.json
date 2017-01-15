@@ -53,6 +53,8 @@
     "google-map-react": "^0.22.3",
     "jquery": "^3.1.1",
     "react": "^15.4.1",
+    "react-addons": "^0.9.1-deprecated",
+    "react-controllables": "^0.6.0",
     "react-dom": "^15.4.1"
   },
   "scripts": {
