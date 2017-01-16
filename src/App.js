@@ -35,7 +35,6 @@ class SearchComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			center: null,
 			value: ''
 		};
 
@@ -61,7 +60,7 @@ class SearchComponent extends React.Component {
 	render() {
 		return (
 			<div className="search input-group">
-				<input type="text" value={this.state.value} onChange={this.onChange}  onKeyDown={this.onKeyDown} className="input form-control" placeholder="Search for..." />
+				<input type="text" value={this.state.value} onChange={this.onChange}  onKeyDown={this.onKeyDown} className="input form-control" placeholder="Search for an accessible hotel, cafe, bar.." />
 				<span className="search-btn input-group-btn">
 					<button className="btn btn-secondary" onClick={this.submit} type="button">Go</button>
 				</span>
@@ -190,11 +189,17 @@ export default class SimpleMapPage extends Component {
 	render() {
 		let state = this.state;
 		let items = this.formatResults( state.places );
+		let current = state.current;
 
 		console.log('render', items);
 
-		let current = state.current;
-		let position = current ? { lat: current.latitude, lng: current.longitude } : state.center;
+		// Center the map depending on window width
+		let offset = 0.035 * (1200 / window.outerWidth);
+
+		let position = current ? {
+			lat: current.latitude,
+			lng: current.longitude + offset
+		} : this.props.center;
 
 		let container = items.loading ? 'results loading' : 'results';
 		let map_container = state.transition ? 'col-12 map-container transition' : 'col-12 map-container';
