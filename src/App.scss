@@ -208,7 +208,7 @@ small {
 				position: absolute;
 				left: -220px;
 				top: 40px;
-				padding: 8px;
+				padding: 9px;
 				margin-left: 14px;
 				color: black;
 				text-align: left;
@@ -255,7 +255,7 @@ small {
   		@include fade(#fff, 0.09);
   		color: $grey;
 
-  		&.current {
+  		&.selected {
   			@include fade(#fff, 0.39);
   		}
 

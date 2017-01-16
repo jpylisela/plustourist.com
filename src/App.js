@@ -85,7 +85,7 @@ export default class SimpleMapPage extends Component {
 		this.state = Object.assign({
 			places: [],
 			markers: [],
-			current: {}
+			selected: {}
 		}, props);
 
 		this.doSearch = this.doSearch.bind(this);
@@ -102,11 +102,14 @@ export default class SimpleMapPage extends Component {
 	}
 
 	formatResults ( results ) {
+		let selected = this.state.selected;
+
 		return results.map(( result ) => {
 			let item = Object.assign({}, result);
 
 			return _.extend(item, {
-				phone: _.isEmpty(item.phone) ? '' : 'tel: ' + item.phone
+				phone: _.isEmpty(item.phone) ? '' : 'tel: ' + item.phone,
+				is_selected: item.id === selected.id
 			});
 		})
 	}
@@ -130,12 +133,12 @@ export default class SimpleMapPage extends Component {
 					return item;
 				});
 
-				let current = places.length ? _.first(places) : {};
+				let selected = places.length ? _.first(places) : {};
 
 				self.setState({
 					places: places,
 					loading: false,
-					current: current
+					selected: selected
 				});
 			}
 		});
@@ -150,7 +153,7 @@ export default class SimpleMapPage extends Component {
 		});
 
 		this.setState({
-			current: selected,
+			selected: selected,
 			transition: true
 		})
 	}
@@ -161,7 +164,7 @@ export default class SimpleMapPage extends Component {
 		});
 
 		this.setState({
-			current: selected,
+			selected: selected,
 			transition: true
 		})
 	}
@@ -189,16 +192,14 @@ export default class SimpleMapPage extends Component {
 	render() {
 		let state = this.state;
 		let items = this.formatResults( state.places );
-		let current = state.current;
-
-		console.log('render', items);
+		let selected = state.selected;
 
 		// Center the map depending on window width
 		let offset = 0.035 * (1200 / window.outerWidth);
 
-		let position = current ? {
-			lat: current.latitude,
-			lng: current.longitude + offset
+		let position = selected ? {
+			lat: selected.latitude,
+			lng: selected.longitude + offset
 		} : this.props.center;
 
 		let container = items.loading ? 'results loading' : 'results';
@@ -239,7 +240,7 @@ export default class SimpleMapPage extends Component {
 								lat={item.latitude}
 								lng={item.longitude}
 								item={item}
-								is_current={item.id === current.id}
+								is_selected={item.is_selected}
 								zIndex={2} />
 							))}
 						</GoogleMap>
@@ -249,16 +250,21 @@ export default class SimpleMapPage extends Component {
 								<div className="col-12 no-padding">
 
 									<div className="list-group">
-										{items.map(( item ) => (
-										<a href="#" id={item.id} key={item.id} onClick={this.selectMenuItem} className="item list-group-item list-group-item-action flex-column align-items-start">
-											<div className="d-flex w-100 justify-content-between">
-												<h5 className="mb-1 title">{item.name_en}</h5>
-												<small className="text-muted">{item.latitude}, {item.longitude}</small>
-											</div>
-											<p className="mb-1">{item.street_address_en}, {item.address_zip} {item.address_city_en}</p>
-											<small className="text-muted text-left">{item.phone}</small>
-										</a>
-										))}
+										{items.map(( item ) => {
+											let item_class = 'item list-group-item list-group-item-action flex-column align-items-start';
+											item_class += item.is_selected ? ' selected' : '';
+
+											return (
+												<a href="#" id={item.id} key={item.id} onClick={this.selectMenuItem} className={item_class}>
+													<div className="d-flex w-100 justify-content-between">
+														<h5 className="mb-1 title">{item.name_en}</h5>
+														<small className="text-muted">{item.latitude}, {item.longitude}</small>
+													</div>
+													<p className="mb-1">{item.street_address_en}, {item.address_zip} {item.address_city_en}</p>
+													<small className="text-muted text-left">{item.phone}</small>
+												</a>
+												)
+										})}
 									</div>
 
 								</div>
