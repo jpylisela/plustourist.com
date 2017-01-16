@@ -178,13 +178,8 @@ small {
 	.map-container {
 		padding: 0;
 
-		// Transition for map animation
-		&.transition div {
-			@include transition(all 0.7s ease-in-out);
-		}
-
 		div.marker {
-			@include transition(none);
+			@include transition(none !important);
 			color: $blue;
 
 			.pointer {
@@ -229,6 +224,15 @@ small {
 					visibility: visible;
 					opacity: 1;
 				}
+			}
+		}
+
+		// Transition for map animation
+		&.transition div {
+			@include transition(all 0.7s ease-in-out);
+
+			&.marker {
+				@include transition(none !important);
 			}
 		}
 	}

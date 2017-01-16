@@ -8,9 +8,7 @@ import logo from './logo.png';
 import './App.scss';
 import MapLocation from './map_location.jsx';
 
-
 const defaultLocation = { lat: 60.170, lng: 24.970 };
-
 const transitionTime = 700;
 
 const API = {
@@ -29,6 +27,34 @@ const API = {
 			console.log('Request failed', error);  
 		});
 	}
+};
+
+var get_distance = (lat1, lon1, lat2, lon2) => {
+
+	lat1 = parseFloat(lat1);
+	lon1 = parseFloat(lon1);
+	lat2 = parseFloat(lat2);
+	lon2 = parseFloat(lon2);
+
+	// Earth in km
+	let radius = 6371;
+
+	let deg2rad = (degrees) => {
+		return degrees * Math.PI / 180;
+	}
+
+	let dLat = deg2rad(lat2-lat1);
+	let dLon = deg2rad(lon2-lon1);
+
+	let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+	Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+	Math.sin(dLon/2) * Math.sin(dLon/2);
+
+	let c = 2 * Math.atan(Math.sqrt(a), Math.sqrt(1-a)); 
+	let distance = radius * c; // Distance in km
+
+	// Distance in meters
+	return distance * 1000;
 };
 
 class SearchComponent extends React.Component {
@@ -148,13 +174,20 @@ export default class SimpleMapPage extends Component {
 		e.preventDefault();
 		let target = e.currentTarget;
 
+		let current = this.state.selected;
+
 		let selected = _.find(this.state.places, (item) => {
 			return item.id === parseInt(target.id, 10);
 		});
 
+		let distance = get_distance(selected.latitude, selected.longitude, current.latitude, current.longitude);
+		let max_distance = 5000;
+
+		let transition = distance < max_distance;
+
 		this.setState({
 			selected: selected,
-			transition: true
+			transition: transition
 		})
 	}
 
@@ -202,7 +235,7 @@ export default class SimpleMapPage extends Component {
 			lng: selected.longitude + offset
 		} : this.props.center;
 
-		let container = items.loading ? 'results loading' : 'results';
+		let container = state.loading ? 'results loading' : 'results';
 		let map_container = state.transition ? 'col-12 map-container transition' : 'col-12 map-container';
 
 		return (
