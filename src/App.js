@@ -31,11 +31,6 @@ const API = {
 
 var get_distance = (lat1, lon1, lat2, lon2) => {
 
-	lat1 = parseFloat(lat1);
-	lon1 = parseFloat(lon1);
-	lat2 = parseFloat(lat2);
-	lon2 = parseFloat(lon2);
-
 	// Earth in km
 	let radius = 6371;
 
@@ -43,14 +38,14 @@ var get_distance = (lat1, lon1, lat2, lon2) => {
 		return degrees * Math.PI / 180;
 	}
 
-	let dLat = deg2rad(lat2-lat1);
-	let dLon = deg2rad(lon2-lon1);
+	let dLat = deg2rad( lat2 - lat1 );
+	let dLon = deg2rad( lon2 - lon1 );
 
-	let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-	Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-	Math.sin(dLon/2) * Math.sin(dLon/2);
+	let a = Math.sin( dLat/2 ) * Math.sin( dLat/2 ) +
+	Math.cos(deg2rad( lat1 )) * Math.cos(deg2rad( lat2 )) * 
+	Math.sin( dLon/2 ) * Math.sin( dLon/2 );
 
-	let c = 2 * Math.atan(Math.sqrt(a), Math.sqrt(1-a)); 
+	let c = 2 * Math.atan( Math.sqrt(a), Math.sqrt(1-a) ); 
 	let distance = radius * c; // Distance in km
 
 	// Distance in meters
