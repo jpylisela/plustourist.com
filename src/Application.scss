@@ -5,7 +5,7 @@
 @import "fonts.scss";
 
 // Typefaces
-$main-font: 'Lato', sans-serif;
+$main-font: 'Lato', 'Helvetica', sans-serif;
 
 // Colors
 $white: #fff;
@@ -17,6 +17,7 @@ $hairline: #e8e8e8;
 $red: #d61600;
 $green: #007300;
 $blue: #3f51b5;
+$marker-color: #a9a9a9;
 
 // Dimensions
 $header-height: 62px;
@@ -94,6 +95,10 @@ p {
 
 small {
 	font-size: 82%;
+}
+
+form {
+	font-size: 16px;
 }
 
 .icon {
@@ -175,12 +180,24 @@ small {
 	bottom: 0;
 	margin: 0;
 
+	.main-container {
+		padding: 0;
+		width: 100%;
+		overflow: hidden;
+	}
+
 	.map-container {
 		padding: 0;
+		position: absolute;
+		width: 100%;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
 
 		div.marker {
 			@include transition(none !important);
-			color: $blue;
+			color: $marker-color;
 			z-index: 1;
 
 			.pointer {
@@ -220,7 +237,7 @@ small {
 			}
 
 			&.current {
-				color: $red;
+				color: $green;
 				z-index: 2;
 
 				.description {
@@ -277,6 +294,12 @@ small {
 
 // Responsive
 @media screen and (min-width: $md-min) {
+
+	.content .map-container {
+  		width: 150%;
+		left: -50%;
+	}
+
 	.results {
 		left: 50%;
 		width: 50%;
@@ -284,9 +307,14 @@ small {
 }
 
 @media screen and (min-width: $lg-min) {
+
+	.content .map-container {
+  		width: 133.333%;
+		left: -33.333%;
+	}
+
 	.results {
 		left: 66.666%;
 		width: 33.333%;
 	}
 }
-

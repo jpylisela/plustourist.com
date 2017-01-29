@@ -17,13 +17,13 @@ const locationStyle = {
 export default class MapLocation extends Component {
 	static propTypes = {
 		item: PropTypes.object,
-		is_selected: PropTypes.bool
+		is_active: PropTypes.bool
 	};
 
 	render() {
 		let item = this.props.item;
-		let is_selected = this.props.is_selected;
-		let container = is_selected ? 'marker icon icon-location2 current' : 'marker icon icon-location';
+		let is_active = this.props.is_active;
+		let container = is_active ? 'marker icon icon-location2 current' : 'marker icon icon-location';
 
 		return (
 			<div style={locationStyle} className={container}>
