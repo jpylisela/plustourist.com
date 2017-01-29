@@ -2,7 +2,7 @@
 
 ### Freedom to Travel - Website for accesible Tourism.
 
-[plustourist.com](http://plustourist.com)
+[app.plustourist.com](https://app.plustourist.com)
 
 ##### Built with
 

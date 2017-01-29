@@ -9,7 +9,6 @@ export default class SearchComponent extends Component {
 		return (
 			<form className="search input-group" onSubmit={e => {
 				e.preventDefault();
-				console.log('on submit');
 
 				if (!input.value.trim()) {
 					return

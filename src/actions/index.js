@@ -28,8 +28,6 @@ export const calculateTransition = (ownProps, args) => {
 }
 
 export const setSearchTerm = (ownProps, term) => {
-	console.log('setSearchTerm', term);
-
 	return {
 		type: 'SET_SEARCH_TERM',
 		term
@@ -37,8 +35,6 @@ export const setSearchTerm = (ownProps, term) => {
 }
 
 export const setActiveFilter = (ownProps, args) => {
-	console.log('setActiveFilter');
-
 	return {
 		type: 'SET_ITEM_ACTIVE',
 		item: args.item

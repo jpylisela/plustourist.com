@@ -23,7 +23,6 @@ const defaultLocation = {
 
 const API = {
 	search: function( term ) {
-		console.log('search', term);
 
 		return fetch( '//plustourist.com/api/search.php', {
 			method: 'post',
@@ -85,8 +84,6 @@ class ContainerView extends Component {
 					return item;
 				});
 
-				console.log('API search', term);
-
 				props.setSearchTerm(term);
 				props.updateThese(places);
 			}
@@ -118,16 +115,12 @@ class ContainerView extends Component {
 
 		if ( this.props.transition ) {
 			setTimeout(() => {
-				console.log('reset');
-
 				self.props.setTransition(false);
-
 			}, transitionTime);
 		}
 	}
 
 	render() {
-		console.log('render', this.props.loading);
 		let props =  this.props;
 		let items =  props.places;
 
