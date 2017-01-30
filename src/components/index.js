@@ -12,7 +12,7 @@ import SearchComponent from '../containers/SearchComponent'
 import VisibleMenuItemList from '../containers/VisibleMenuItemList'
 
 import '../Application.scss';
-import MapLocation from './mapLocation.jsx';
+import MapLocation from './MapLocation';
 
 const transitionTime = 700;
 
@@ -85,7 +85,7 @@ class ContainerView extends Component {
 				});
 
 				props.setSearchTerm(term);
-				props.updateThese(places);
+				props.updateItems(places);
 			}
 		});
 	}
@@ -96,7 +96,7 @@ class ContainerView extends Component {
 			return item.id === parseInt(id, 10);
 		});
 
-		this.props.selectThis({
+		this.props.selectMarker({
 			item: selected,
 			center: this.props.center
 		});
@@ -186,7 +186,6 @@ class ContainerView extends Component {
 }
 
 
-
 const mapStateToProps = (state) => {
 	return {
 		term: state.term,
@@ -208,10 +207,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		setSearchTerm: (term) => {
 			dispatch(setSearchTerm(ownProps, term));
 		},
-		updateThese: (places) => {
+		updateItems: (places) => {
 			dispatch(updatePlaces(ownProps, places));
 		},
-		selectThis: (args) => {
+		selectMarker: (args) => {
       		dispatch(calculateTransition(ownProps, args));
 			dispatch(setActiveFilter(ownProps, args));
 		},

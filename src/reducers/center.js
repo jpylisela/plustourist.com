@@ -18,22 +18,16 @@ const center = (state, action) => {
 		  	}
 
 		case 'UPDATE_PLACES':
+			let first = action.items.length ? _.first(action.items) : [];
 
-			if ( action.items.length ) {
-				let first = _.first(action.items);
-
-				return {
-			  		lat: parseFloat(first.latitude),
-			  		lng: parseFloat(first.longitude),
-			  	}
-			}
+			return {
+		  		lat: parseFloat(first.latitude),
+		  		lng: parseFloat(first.longitude),
+		  	}
 
 		default:
 			return state || default_location;
 	}
-
-
-	return state || default_location;
 }
 
 export default center
