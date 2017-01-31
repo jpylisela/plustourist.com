@@ -129,7 +129,7 @@ class ContainerView extends Component {
 		let center = props.center;
 
 		let container = props.loading ? 'results loading' : 'results';
-		let main_container = props.transition ? 'col-12 main-container transition' : 'col-12 main-container';
+		let map_container = props.transition ? 'map-container transition' : 'map-container';
 
 		return (
 			<div className="container-fluid app">
@@ -146,8 +146,8 @@ class ContainerView extends Component {
 					<div className="col-3"></div>
 				</div>
 				<div className="row content">
-					<div className={main_container}>
-						<div className="map-container">
+					<div className="col-12 main-container">
+						<div className={map_container}>
 							<GoogleMap
 								bootstrapURLKeys={{
 									key: 'AIzaSyBASoIltUYEdmuTOs_x0ssvJHkoYTdtPvQ',
