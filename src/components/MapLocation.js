@@ -30,7 +30,9 @@ export default class MapLocation extends Component {
 					<div className="pointer"></div>
 					<h5>{item.name_en}</h5>
 					<p>{item.desc_en}</p>
-					<a href={item.www_en} target="_blank">Visit website</a>
+					{item.www_en &&
+						<a href={item.www_en} target="_blank">Visit website</a>
+					}
 				</div>
 			</div>
 		);

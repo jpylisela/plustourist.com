@@ -159,7 +159,7 @@ form {
 
 		.input {
 			padding: 0 12px;
-			// border: 1px solid mix($brand-color, $white, 14%);
+			font-family: $main-font;
 			@include border-radius(3px);
 			@include placeholder {
 				color: $light-grey;

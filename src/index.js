@@ -13,8 +13,8 @@ let store = createStore(reducerState)
 
 
 render(
-  <Provider store={store}>
-  	<Application />
-  </Provider>,
-  document.getElementById('root')
+	<Provider store={store}>
+		<Application />
+	</Provider>,
+	document.getElementById('root')
 )
