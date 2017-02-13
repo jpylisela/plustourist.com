@@ -50,7 +50,6 @@ class ContainerView extends Component {
 		this.onMarkerEnter = this.onMarkerEnter.bind(this);
 		this.onMarkerLeave = this.onMarkerLeave.bind(this);
 		this.onChange = this.onChange.bind(this);
-		
 	}
 
 	componentDidMount () {
@@ -185,7 +184,6 @@ class ContainerView extends Component {
 	}
 }
 
-
 const mapStateToProps = (state) => {
 	return {
 		term: state.term,
@@ -226,4 +224,3 @@ const Application = connect(
 )(ContainerView)
 
 export default Application
-
