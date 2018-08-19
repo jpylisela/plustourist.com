@@ -1,6 +1,6 @@
 # Plus Tourist
 
-### Freedom to Travel - Website for accesible Tourism.
+### Freedom to Travel - Website for accessible Tourism.
 
 [app.plustourist.com](https://app.plustourist.com)
 
