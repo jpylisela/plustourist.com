@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import GoogleMap from 'google-map-react';
+import Config from '../config'
 import _ from 'underscore';
 
 import title from '../img/plus-tourist.png';
@@ -26,16 +27,19 @@ const API = {
 
 		return fetch( '//plustourist.com/api/search.php', {
 			method: 'post',
-	        headers: {  
-	          "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"  
+            mode: 'cors',
+	        headers: {
+	          "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
 	        },
 			body: 'type=location&query=' + term
 		})
 		.then( function( res ) {
+            console.log( 'res', res );
+
 			return res.json();
 		})
 		.catch( function( error ) {
-			console.log('Request failed', error);  
+			console.log('Request failed', error);
 		});
 	}
 };
@@ -149,7 +153,7 @@ class ContainerView extends Component {
 						<div className={map_container}>
 							<GoogleMap
 								bootstrapURLKeys={{
-									key: 'AIzaSyBASoIltUYEdmuTOs_x0ssvJHkoYTdtPvQ',
+									key: Config.apiKey,
 									language: 'en'
 								}}
 								defaultCenter={defaultLocation}
@@ -160,7 +164,7 @@ class ContainerView extends Component {
 						        onChange={this.onChange}
 								center={position}>
 								{items.map(( item ) => (
-								<MapLocation 
+								<MapLocation
 									key={item.id}
 									lat={item.latitude}
 									lng={item.longitude}
